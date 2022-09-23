@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.telecom.Call
+import android.telecom.TelecomManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 
-class CallActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var number: String
 
@@ -19,6 +20,8 @@ class CallActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call)
         number = intent?.data?.schemeSpecificPart ?: "Number not found"
+
+        offerReplacingDefaultDialer()
     }
 
     override fun onStart() {
@@ -57,9 +60,17 @@ class CallActivity : AppCompatActivity() {
         )
     }
 
+    private fun offerReplacingDefaultDialer() {
+        if (getSystemService(TelecomManager::class.java).defaultDialerPackage != packageName) {
+            Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
+                .putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
+                .let(::startActivity)
+        }
+    }
+
     companion object {
         fun start(context: Context, call: Call) {
-            Intent(context, CallActivity::class.java)
+            Intent(context, MainActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .setData(call.details.handle)
                 .let(context::startActivity)

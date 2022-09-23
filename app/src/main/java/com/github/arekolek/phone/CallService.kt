@@ -7,7 +7,7 @@ class CallService : InCallService() {
 
     override fun onCallAdded(call: Call) {
         OngoingCall.call = call
-        CallActivity.start(this, call)
+        MainActivity.start(this, call)
     }
 
     override fun onCallRemoved(call: Call) {

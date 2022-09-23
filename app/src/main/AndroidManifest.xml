@@ -16,7 +16,7 @@
         >
 
         <activity
-            android:name=".DialerActivity"
+            android:name=".MainActivity"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
             >
             <intent-filter>
@@ -52,8 +52,6 @@
                 <action android:name="android.telecom.InCallService" />
             </intent-filter>
         </service>
-
-        <activity android:name=".CallActivity" />
     </application>
 
 </manifest>
